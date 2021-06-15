@@ -39,6 +39,9 @@ perc_coarse_sand = np.zeros([count+1])
 perc_medium_sand = np.zeros([count+1])  
 perc_fine_sand = np.zeros([count+1])  
 perc_very_fine_sand = np.zeros([count+1])  
+perc_silt = np.zeros([count+1])
+perc_granule = np.zeros([count+1])  
+perc_pebble = np.zeros([count+1])  
 
 
 #set up excel spreadsheet
@@ -65,6 +68,9 @@ worksheet.write(0,17, 'Perc_CoarseSand')
 worksheet.write(0,18, 'Perc_MediumSand')
 worksheet.write(0,19, 'Perc_FineSand')
 worksheet.write(0,20, 'Perc_VeryFineSand')
+worksheet.write(0,21, 'Perc_Silt')
+worksheet.write(0,22, 'Perc_Granule')
+worksheet.write(0,23, 'Perc_Pebble')
 
 #loop through again to actually calculate data
 count = -1
@@ -111,6 +117,9 @@ for filename in os.listdir(directory):
         perc_medium_sand[count] = np.sum(p[np.where((grain_size_mm >= 0.25) & (grain_size_mm < 0.5))])
         perc_fine_sand[count] = np.sum(p[np.where((grain_size_mm >= 0.125) & (grain_size_mm < 0.25))])
         perc_very_fine_sand[count] = np.sum(p[np.where((grain_size_mm >= 0.0625) & (grain_size_mm < 0.125))])
+	perc_silt[count] = np.sum(p[np.where((grain_size_mm >= 0.004) & (grain_size_mm < 0.0625))])
+	perc_granule[count] = np.sum(p[np.where((grain_size_mm >= 2) & (grain_size_mm < 4))])
+	perc_pebble[count] = np.sum(p[np.where(grain_size_mm >= 4)])
         
         
         #write out data
@@ -138,6 +147,9 @@ for filename in os.listdir(directory):
         worksheet.write(count+1,18, perc_medium_sand[count])
         worksheet.write(count+1,19, perc_fine_sand[count])
         worksheet.write(count+1,20, perc_very_fine_sand[count])
+	worksheet.write(count+1,21, perc_silt[count])
+	worksheet.write(count+1,22, perc_granule[count])
+	worksheet.write(count+1,23, perc_pebble[count])
                                 
 #close and save excel spreadsheet        
 workbook.close()
